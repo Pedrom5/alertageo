@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlertaGeo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="logo-wrap">
+        <div class="logo-badge">A</div>
+        <span>AlertaGeo</span>
+      </div>
+      <nav class="nav">
+        <a href="#inicio">Início</a>
+        <a href="#problema">Problema</a>
+        <a href="#dashboard">Dashboard</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Monitoramento de áreas de risco</p>
+          <h1>Protegendo comunidades com informação rápida e organizada.</h1>
+          <p class="subtitle">
+            Centralizamos alertas, monitoramos áreas vulneráveis e apoiamos ações preventivas
+            para reduzir riscos em bairros e regiões críticas.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="scrollToForm">Registrar alerta</button>
+            <button class="secondary-btn" id="showLogin">Acessar painel</button>
+          </div>
+        </div>
+
+        <div class="auth-panel">
+          <div class="tabs">
+            <button class="tab active" data-tab="login">Login</button>
+            <button class="tab" data-tab="register">Cadastro</button>
+          </div>
+
+          <form id="loginForm" class="auth-form active">
+            <label>
+              Email
+              <input type="email" id="loginEmail" placeholder="seu@email.com" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="loginPassword" placeholder="••••••••" required />
+            </label>
+            <button type="submit" class="primary-btn full">Entrar</button>
+          </form>
+
+          <form id="registerForm" class="auth-form">
+            <label>
+              Nome
+              <input type="text" id="registerName" placeholder="Seu nome" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="registerEmail" placeholder="seu@email.com" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="registerPassword" placeholder="Crie uma senha" required />
+            </label>
+            <label>
+              Perfil
+              <select id="registerPerfil">
+                <option value="cidadao">Morador</option>
+                <option value="operador">Operador</option>
+                <option value="administrador">Administrador</option>
+              </select>
+            </label>
+            <button type="submit" class="primary-btn full">Criar conta</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="problema" class="info-section">
+        <div class="section-head">
+          <p class="eyebrow">O problema</p>
+          <h2>Informações dispersas geram atrasos e riscos maiores.</h2>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Comunicação fragmentada</h3>
+            <p>Alertas chegam por canais diferentes sem padronização ou priorização.</p>
+          </article>
+          <article class="card">
+            <h3>Sem histórico</h3>
+            <p>Não há organização das ocorrências, dificultando a análise de tendências.</p>
+          </article>
+          <article class="card">
+            <h3>Resposta lenta</h3>
+            <p>As equipes de campo e a gestão pública perdem tempo para localizar áreas críticas.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="dashboard" class="dashboard-section">
+        <div class="section-head">
+          <p class="eyebrow">Dashboard</p>
+          <h2>Visão geral do sistema</h2>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="label">Áreas monitoradas</span>
+            <strong>128</strong>
+          </div>
+          <div class="stat-box">
+            <span class="label">Alertas ativos</span>
+            <strong>24</strong>
+          </div>
+          <div class="stat-box">
+            <span class="label">Prioridade alta</span>
+            <strong>7</strong>
+          </div>
+          <div class="stat-box">
+            <span class="label">Ações em andamento</span>
+            <strong>15</strong>
+          </div>
+        </div>
+
+        <div class="report-panel">
+          <h3>Registrar novo alerta</h3>
+          <form id="alertForm">
+            <div class="two-columns">
+              <label>
+                Título
+                <input type="text" id="alertTitle" placeholder="Ex: Rachadura em encosta" required />
+              </label>
+              <label>
+                Categoria
+                <select id="alertCategory">
+                  <option value="alagamento">Alagamento</option>
+                  <option value="erosao">Erosão</option>
+                  <option value="incendio">Incêndio</option>
+                  <option value="deslizamento">Deslizamento</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="two-columns">
+              <label>
+                Nível de risco
+                <select id="alertLevel">
+                  <option value="baixo">Baixo</option>
+                  <option value="medio">Médio</option>
+                  <option value="alto">Alto</option>
+                  <option value="muito alto">Muito alto</option>
+                </select>
+              </label>
+              <label>
+                Localização
+                <input type="text" id="alertLocation" placeholder="Rua / Bairro / Coordenada" />
+              </label>
+            </div>
+
+            <label>
+              Descrição
+              <textarea id="alertDescription" rows="4" placeholder="Descreva a ocorrência e os impactos observados." required></textarea>
+            </label>
+
+            <button type="submit" class="primary-btn full">Salvar alerta</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,10 +1,12 @@
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'http://localhost:3001/api';
 
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const alertForm = document.getElementById('alertForm');
 const tabs = document.querySelectorAll('.tab');
 const toast = document.getElementById('toast');
+const listaReclamacoes = document.getElementById('listaReclamacoes');
+const btnAtualizarReclamacoes = document.getElementById('btnAtualizarReclamacoes');
 
 function showToast(message, success = true) {
   toast.textContent = message;
@@ -14,6 +16,53 @@ function showToast(message, success = true) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 2200);
+}
+
+function renderReclamacoes(reclamacoes) {
+  if (!Array.isArray(reclamacoes) || reclamacoes.length === 0) {
+    listaReclamacoes.innerHTML = '<div class="empty-state">Nenhuma reclamação cadastrada no momento.</div>';
+    return;
+  }
+
+  listaReclamacoes.innerHTML = reclamacoes.map((reclamacao) => {
+    const categoria = reclamacao.categoria || 'geral';
+    const nivel = reclamacao.nivel || 'medio';
+    const status = reclamacao.status || 'novo';
+    const descricao = reclamacao.descricao || 'Descrição não informada.';
+    const localizacao = reclamacao.latitude && reclamacao.longitude
+      ? `Lat ${reclamacao.latitude}, Lon ${reclamacao.longitude}`
+      : 'Localização não informada';
+
+    return `
+      <article class="reclamacao-card">
+        <div class="reclamacao-topo">
+          <span class="tag categoria">${categoria}</span>
+          <span class="tag nivel ${nivel}">${nivel}</span>
+        </div>
+        <h4>${reclamacao.titulo}</h4>
+        <p>${descricao}</p>
+        <div class="reclamacao-meta">
+          <span>${status}</span>
+          <span>${localizacao}</span>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+async function carregarReclamacoes() {
+  try {
+    const response = await fetch(`${API_BASE}/alerts`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Não foi possível carregar as reclamações');
+    }
+
+    renderReclamacoes(data);
+  } catch (error) {
+    listaReclamacoes.innerHTML = `<div class="empty-state error">${error.message}</div>`;
+  }
 }
 
 function switchTab(target) {
@@ -29,6 +78,8 @@ function switchTab(target) {
 tabs.forEach((tab) => {
   tab.addEventListener('click', () => switchTab(tab.dataset.tab));
 });
+
+btnAtualizarReclamacoes.addEventListener('click', carregarReclamacoes);
 
 document.getElementById('scrollToForm').addEventListener('click', () => {
   document.getElementById('alertForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -134,6 +185,7 @@ alertForm.addEventListener('submit', async (event) => {
 
     showToast('Alerta enviado com sucesso!');
     alertForm.reset();
+    await carregarReclamacoes();
   } catch (error) {
     showToast(error.message, false);
   }
@@ -147,8 +199,10 @@ async function checkHealth() {
     }
     const data = await response.json();
     console.log(data);
+    await carregarReclamacoes();
   } catch (error) {
     console.warn('Back-end ainda não está em execução:', error.message);
+    listaReclamacoes.innerHTML = '<div class="empty-state error">Servidor indisponível. Ligue o backend para carregar as reclamações.</div>';
   }
 }
 

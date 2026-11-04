@@ -4,7 +4,7 @@ const { authMiddleware, authorizeRoles } = require('../middlewares/authMiddlewar
 
 const router = express.Router();
 
-router.get('/', authMiddleware, getAlerts);
+router.get('/', getAlerts);
 router.post('/', authMiddleware, authorizeRoles('administrador', 'operador', 'cidadao'), createAlert);
 
 module.exports = router;
